@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-ink: #14151a;
+  --color-paper: #f7f7f5;
+  --color-brand: #4338ca;
+  --color-brand-dark: #312a94;
+  --color-lime: #c6f135;
+  --color-muted: #6b6d76;
+  --color-line: #e4e4e0;
+  --color-strong: #b8b8b2;
+  --color-cat-assignment: #b45309;
+  --color-cat-project: #4338ca;
+  --color-cat-internship: #0f766e;
+  --color-cat-gig: #a21caf;
+  --color-teal: #0f766e;
+  --color-teal-light: #ccfbf1;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer base {
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+  }
+}
+
+/* Fix browser autofill blue tint */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px white inset;
+  -webkit-text-fill-color: var(--color-ink);
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+@layer utilities {
+  .card {
+    background: white;
+    border: 1px solid var(--color-line);
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(20, 21, 26, 0.04);
+    transition: box-shadow 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  }
+  .card:hover {
+    box-shadow: 0 4px 16px rgba(20, 21, 26, 0.08);
+    border-color: var(--color-strong);
+  }
+}
+
+@layer utilities {
+  .hero-gradient {
+    background: radial-gradient(ellipse 800px 400px at 20% -10%, rgba(67, 56, 202, 0.12), transparent),
+      radial-gradient(ellipse 600px 300px at 100% 0%, rgba(198, 241, 53, 0.15), transparent);
+  }
+
+  .dot-grid {
+    background-image: radial-gradient(var(--color-line) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .stat-number {
+    background: linear-gradient(135deg, var(--color-brand), #7c3aed);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@layer utilities {
+  .navbar-glass {
+    background: rgba(247, 247, 245, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .banner-pattern {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+}
+
+@keyframes bounce-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+.scroll-cue {
+  animation: bounce-y 1.6s ease-in-out infinite;
+}
