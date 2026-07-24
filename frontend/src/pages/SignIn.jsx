@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { ShieldCheck } from "lucide-react";
 import SkillDial from "../components/SkillDial";
 
 const API_URL = "http://localhost:4000/api";
@@ -53,23 +55,37 @@ export default function SignIn() {
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
-      <div className="hidden lg:flex flex-col justify-between bg-ink text-paper p-12 relative overflow-hidden">
-        <Link to="/" className="flex items-center gap-2 font-display font-semibold text-lg z-10 w-fit">
-          <span className="w-2.5 h-2.5 bg-lime rounded-sm" />
+      <div className="hidden lg:flex flex-col justify-between bg-violet-ink text-white p-12 relative overflow-hidden">
+        <div className="blob w-[360px] h-[360px] -top-24 -right-24" style={{ background: "var(--color-violet)" }} />
+        <div className="blob w-[260px] h-[260px] bottom-10 -left-16" style={{ background: "var(--color-coral)", animationDelay: "4s" }} />
+
+        <Link to="/" className="flex items-center gap-2 font-[var(--font-display-bold)] font-extrabold text-lg z-10 w-fit">
+          <span className="w-6 h-6 rounded-[6px] bg-white text-violet-ink flex items-center justify-center text-[10px] font-bold">
+            SD
+          </span>
           SkillDial
         </Link>
 
-        <div className="z-10 animate-[fadeUp_0.5s_ease-out]">
-          <h1 className="font-display text-4xl font-semibold leading-tight mb-4">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="z-10"
+        >
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-white/15 chip-pop px-3 py-1.5 mb-5">
+            <ShieldCheck size={13} />
+            Verified students only
+          </span>
+          <h1 className="font-[var(--font-display-bold)] text-4xl font-extrabold leading-tight tracking-tight mb-4">
             Show your skill level.
             <br />
             Not just your resume.
           </h1>
-          <p className="text-white/60 max-w-sm">
-            Every profile carries a skill dial — rate yourself 1 to 5 on what you know, backed by real
-            portfolio work. Posters see exactly who they're hiring.
+          <p className="text-white/65 max-w-sm leading-relaxed">
+            Every profile carries a verified skill dial — rated 1 to 5, backed by real portfolio
+            work. Posters see exactly who they're hiring, at a glance.
           </p>
-        </div>
+        </motion.div>
 
         <div className="z-10 space-y-3">
           {[
@@ -77,69 +93,76 @@ export default function SignIn() {
             { skill: "Python", level: 4 },
             { skill: "Data analysis", level: 3 },
           ].map((s, i) => (
-            <div
+            <motion.div
               key={s.skill}
-              className="flex items-center justify-between border-t border-white/10 pt-3 animate-[fadeUp_0.5s_ease-out_backwards]"
-              style={{ animationDelay: `${i * 100 + 150}ms` }}
+              initial={{ opacity: 0, x: -16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: i * 0.1 + 0.15 }}
+              className="flex items-center justify-between border-t border-white/10 pt-3"
             >
-              <span className="text-sm text-white/70 font-(--font-mono)">{s.skill}</span>
+              <span className="text-sm text-white/70 font-mono">{s.skill}</span>
               <SkillDial level={s.level} />
-            </div>
-          ))}
-        </div>
-
-        <div className="absolute inset-0 opacity-[0.06] grid grid-cols-6 gap-8 p-12 pointer-events-none">
-          {Array.from({ length: 24 }).map((_, i) => (
-            <SkillDial key={i} level={(i % 5) + 1} size="lg" />
+            </motion.div>
           ))}
         </div>
       </div>
 
-      <div className="flex items-center justify-center p-6 sm:p-12">
-        <div className="w-full max-w-sm animate-[fadeUp_0.4s_ease-out]">
-          <Link to="/" className="lg:hidden flex items-center gap-2 font-display font-semibold text-lg mb-10 w-fit">
-            <span className="w-2.5 h-2.5 bg-brand rounded-sm" />
+      <div className="flex items-center justify-center p-6 sm:p-12 bg-lilac">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-sm"
+        >
+          <Link to="/" className="lg:hidden flex items-center gap-2 font-[var(--font-display-bold)] font-extrabold text-lg mb-10 w-fit">
+            <span className="w-6 h-6 rounded-[6px] bg-violet text-white flex items-center justify-center text-[10px] font-bold">
+              SD
+            </span>
             SkillDial
           </Link>
 
-          <h2 className="font-display text-2xl font-semibold mb-1">
+          <h2 className="font-[var(--font-display-bold)] text-2xl font-extrabold tracking-tight mb-1 text-violet-ink">
             {mode === "login" ? "Welcome back" : "Create your account"}
           </h2>
           <p className="text-muted text-sm mb-8">
             {mode === "login" ? "Sign in to continue." : "Free for verified students."}
           </p>
 
-          <div className="grid grid-cols-2 gap-2 mb-6" role="radiogroup" aria-label="I am a">
-            <button
-              type="button"
-              role="radio"
-              aria-checked={role === "freelancer"}
-              onClick={() => setRole("freelancer")}
-              className={`text-left rounded-lg border px-4 py-3 transition-all duration-150 active:scale-[0.98] ${
-                role === "freelancer" ? "border-brand bg-brand/5" : "border-line hover:border-strong"
-              }`}
-            >
-              <p className="text-sm font-medium">Freelancer</p>
-              <p className="text-xs text-muted mt-0.5">I want to find work</p>
-            </button>
-            <button
-              type="button"
-              role="radio"
-              aria-checked={role === "poster"}
-              onClick={() => setRole("poster")}
-              className={`text-left rounded-lg border px-4 py-3 transition-all duration-150 active:scale-[0.98] ${
-                role === "poster" ? "border-brand bg-brand/5" : "border-line hover:border-strong"
-              }`}
-            >
-              <p className="text-sm font-medium">Poster</p>
-              <p className="text-xs text-muted mt-0.5">I want to hire</p>
-            </button>
-          </div>
+          {mode === "signup" && (
+            <div className="grid grid-cols-2 gap-2 mb-6" role="radiogroup" aria-label="I am a">
+              <button
+                type="button"
+                role="radio"
+                aria-checked={role === "freelancer"}
+                onClick={() => setRole("freelancer")}
+                className={`text-left chip-pop border-2 px-4 py-3 transition-all active:scale-[0.98] ${
+                  role === "freelancer" ? "border-violet bg-white shadow-[0_6px_16px_-6px_rgba(109,93,246,0.35)]" : "border-transparent bg-white/60 hover:bg-white"
+                }`}
+                style={{ borderRadius: "16px" }}
+              >
+                <p className="text-sm font-bold">Freelancer</p>
+                <p className="text-xs text-muted mt-0.5">I want to find work</p>
+              </button>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={role === "poster"}
+                onClick={() => setRole("poster")}
+                className={`text-left chip-pop border-2 px-4 py-3 transition-all active:scale-[0.98] ${
+                  role === "poster" ? "border-violet bg-white shadow-[0_6px_16px_-6px_rgba(109,93,246,0.35)]" : "border-transparent bg-white/60 hover:bg-white"
+                }`}
+                style={{ borderRadius: "16px" }}
+              >
+                <p className="text-sm font-bold">Poster</p>
+                <p className="text-xs text-muted mt-0.5">I want to hire</p>
+              </button>
+            </div>
+          )}
 
           <form className="space-y-4" onSubmit={handleSubmit}>
             {mode === "signup" && (
               <div>
-                <label htmlFor="name" className="text-xs font-medium text-muted block mb-1.5">
+                <label htmlFor="name" className="text-xs font-bold text-muted block mb-1.5">
                   Full name
                 </label>
                 <input
@@ -150,13 +173,13 @@ export default function SignIn() {
                   value={form.name}
                   onChange={(e) => updateField("name", e.target.value)}
                   placeholder="Aisha Rahman"
-                  className="w-full h-11 rounded-lg border border-line px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-shadow"
+                  className="w-full h-11 chip-pop border border-violet/10 px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet/30 transition-shadow bg-white"
                 />
               </div>
             )}
 
             <div>
-              <label htmlFor="email" className="text-xs font-medium text-muted block mb-1.5">
+              <label htmlFor="email" className="text-xs font-bold text-muted block mb-1.5">
                 {role === "freelancer" || mode === "signup" ? "College / work email" : "Email"}
               </label>
               <input
@@ -166,7 +189,7 @@ export default function SignIn() {
                 value={form.email}
                 onChange={(e) => updateField("email", e.target.value)}
                 placeholder={role === "freelancer" ? "you@college.edu" : "you@company.com"}
-                className="w-full h-11 rounded-lg border border-line px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-shadow"
+                className="w-full h-11 chip-pop border border-violet/10 px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet/30 transition-shadow bg-white"
               />
               {role === "freelancer" && mode === "signup" && (
                 <p className="text-xs text-muted mt-1.5">
@@ -176,7 +199,7 @@ export default function SignIn() {
             </div>
 
             <div>
-              <label htmlFor="password" className="text-xs font-medium text-muted block mb-1.5">
+              <label htmlFor="password" className="text-xs font-bold text-muted block mb-1.5">
                 Password
               </label>
               <input
@@ -186,7 +209,7 @@ export default function SignIn() {
                 value={form.password}
                 onChange={(e) => updateField("password", e.target.value)}
                 placeholder="••••••••"
-                className="w-full h-11 rounded-lg border border-line px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-shadow"
+                className="w-full h-11 chip-pop border border-violet/10 px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet/30 transition-shadow bg-white"
               />
             </div>
 
@@ -195,7 +218,7 @@ export default function SignIn() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full h-11 rounded-lg bg-brand hover:bg-brand-dark text-white text-sm font-medium transition-all duration-150 active:scale-[0.98] mt-2 disabled:opacity-60"
+              className="w-full h-12 chip-pop bg-violet hover:bg-violet-dark text-white text-sm font-bold transition-all active:scale-[0.98] mt-2 disabled:opacity-60 shadow-[0_10px_24px_-8px_rgba(109,93,246,0.55)] hover:-translate-y-0.5"
             >
               {loading ? "Please wait..." : mode === "login" ? "Sign in" : "Create account"}
             </button>
@@ -206,12 +229,12 @@ export default function SignIn() {
             <button
               type="button"
               onClick={() => setMode(mode === "login" ? "signup" : "login")}
-              className="text-brand font-medium hover:underline"
+              className="text-violet font-bold hover:underline"
             >
               {mode === "login" ? "Create an account" : "Sign in"}
             </button>
           </p>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import Feed from "./pages/Feed";
 import BrowseJobs from "./pages/BrowseJobs";
+import JobDetail from "./pages/JobDetail";
 import PostJob from "./pages/PostJob";
 import Profile from "./pages/Profile";
 
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/feed" element={<Feed />} />
         <Route path="/jobs" element={<BrowseJobs />} />
+        <Route path="/jobs/:id" element={<JobDetail />} />
         <Route path="/post-job" element={<PostJob />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>

@@ -1,17 +1,25 @@
-export default function SkillDial({ level = 0, max = 5, size = "sm" }) {
-  const notches = Array.from({ length: max }, (_, i) => i < level);
-  const dims = size === "lg" ? "w-3 h-6" : "w-1.5 h-4";
-  const gap = size === "lg" ? "gap-1.5" : "gap-1";
+// The signature element of SkillDial: a compact step-meter that shows a
+// verified skill level (1-5) at a glance, in place of a generic star rating.
+export default function SkillDial({ level = 0, max = 5, size = "sm", showLabel = false }) {
+  const bars = Array.from({ length: max }, (_, i) => i < level);
+  const isLg = size === "lg";
+  const barWidth = isLg ? "w-2" : "w-1";
+  const gap = isLg ? "gap-1" : "gap-0.5";
+  const baseHeight = isLg ? 7 : 4;
+  const step = isLg ? 4 : 2.5;
 
   return (
-    <div className={`inline-flex items-end ${gap}`} role="img" aria-label={`Skill level ${level} out of ${max}`}>
-      {notches.map((filled, i) => (
-        <span
-          key={i}
-          className={`${dims} rounded-sm ${filled ? "bg-indigo" : "bg-line"}`}
-          style={{ height: `${(size === "lg" ? 10 : 6) + i * (size === "lg" ? 5 : 3)}px` }}
-        />
-      ))}
-    </div>
+    <span className={`inline-flex items-center ${gap}`} role="img" aria-label={`Skill level ${level} out of ${max}`}>
+      <span className={`inline-flex items-end ${gap}`}>
+        {bars.map((filled, i) => (
+          <span
+            key={i}
+            className={`${barWidth} rounded-[1.5px] ${filled ? "bg-brand" : "bg-line"}`}
+            style={{ height: `${baseHeight + i * step}px` }}
+          />
+        ))}
+      </span>
+      {showLabel && <span className="text-xs font-mono text-muted ml-1.5">{level}/{max}</span>}
+    </span>
   );
 }
